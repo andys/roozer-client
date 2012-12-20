@@ -1,0 +1,14 @@
+
+require 'roozer_client'
+
+rc = RoozerClient.new(url: 'http://orch1:2988;http://orch1:2987', path: 'rootpath')
+rc['subpath'] = { data: "abc" }
+
+rc.list
+=> ['subpath']
+
+rc['subpath']
+=> { "data" => "abc" }
+
+rc.request(:delete, 'subpath/data')
+
