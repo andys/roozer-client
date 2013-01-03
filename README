@@ -1,7 +1,12 @@
 
 require 'roozer_client'
 
-rc = RoozerClient.new(url: 'http://orch1:2988;http://orch1:2987', path: 'rootpath')
+# Connect to a roozer server.  Multiple servers can be listed seperated by
+# semicolons.  Client uses round robin until it finds a server that responds
+# to its requests.
+
+rc = RoozerClient.new(url: 'http://orch1:2987;http://orch2:2987', path: 'rootpath')
+
 rc['subpath'] = { data: "abc" }
 
 rc.list
@@ -11,4 +16,3 @@ rc['subpath']
 => { "data" => "abc" }
 
 rc.request(:delete, 'subpath/data')
-
