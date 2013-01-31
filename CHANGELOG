@@ -1,3 +1,4 @@
+v0.4. Drop the requirement for json gem
 v0.3. Rescue from 500 errors & dropped connections
 v0.2. Testing/refactoring
 v0.1. Proof of concept
