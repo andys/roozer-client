@@ -42,7 +42,7 @@ class RoozerClient
       fullpath = [@path,path].compact.map(&:to_s).join('/')
       response = resource["/#{fullpath}"].send(method, *[({value: data}.to_json if data), {content_type: :json, accept: :json}].compact)
       JSON.parse(response) rescue {}
-    rescue Errno::ECONNREFUSED, RestClient::RequestTimeout, RestClient::ServerBrokeConnection, RestClient::InternalServerError
+    rescue SystemCallError, RestClient::RequestTimeout, RestClient::ServerBrokeConnection, RestClient::InternalServerError
       puts "#{$!.class}, retrying..."
       @urls.rotate!
       sleep 5
@@ -51,4 +51,3 @@ class RoozerClient
   end
   
 end
-
