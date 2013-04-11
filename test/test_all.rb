@@ -32,6 +32,18 @@ class TestRoozerClient < Test::Unit::TestCase
     assert_equal datahash, result
   end
 
+  def test_delete
+    result = nil
+    datahash = {'a' => 'b'}
+    response = accept_request(204, '') do
+      @client.delete('sub1')
+    end
+    assert response
+    assert_equal 'DELETE', response.request_method
+    assert_equal '/test/sub1', response.path
+  end
+
+
   def test_put
     response = accept_request(204, '') do
       @client.put('sub2', x1: 'x2')
@@ -42,6 +54,7 @@ class TestRoozerClient < Test::Unit::TestCase
     assert_equal '{"value":{"x1":"x2"}}', response.body
   end
 
+
   def test_get_404
     result = nil
     response = accept_request(404, {error: 'not found'}.to_json) do
@@ -51,6 +64,19 @@ class TestRoozerClient < Test::Unit::TestCase
     assert_equal '/test/xxx', response.path
     assert_nil result
   end
+
+  def test_update_same
+    result = nil
+    datahash = {'a' => 'b'}
+    response = accept_request(200, {name:"/test/sub1",type:"file",value:datahash}.to_json) do
+      result = @client.update('sub1', datahash)
+    end
+    assert response
+    assert_equal 'GET', response.request_method
+    assert_equal '/test/sub1', response.path
+    assert_equal nil, result
+  end
+
 
 #  def test_failover
 #    @client = RoozerClient.new(url: "http://127.0.0.1:7997;#{@url}", path: 'test')

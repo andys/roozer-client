@@ -1,3 +1,4 @@
+v0.6. support delete and update methods
 v0.5. Catch more network errors
 v0.4. Drop the requirement for json gem
 v0.3. Rescue from 500 errors & dropped connections

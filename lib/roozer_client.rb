@@ -35,6 +35,15 @@ class RoozerClient
   end
   alias :[]= :put
   
+  def delete(path)
+    request(:delete, path)
+  end
+  
+  def update(path, data)
+    existing_data = get(path) rescue nil
+    put(path, data) unless existing_data == data
+  end
+  
   def request(method, path, data=nil)
     begin
       url = @urls.first

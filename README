@@ -15,4 +15,7 @@ rc.list
 rc['subpath']
 => { "data" => "abc" }
 
-rc.request(:delete, 'subpath/data')
+rc.delete 'subpath/data'
+
+# sets the data only if is different to what is already there
+rc.update(path, {...data...})  
