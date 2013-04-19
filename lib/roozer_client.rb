@@ -41,7 +41,11 @@ class RoozerClient
   
   def update(path, data)
     existing_data = get(path) rescue nil
-    put(path, data) unless existing_data == data
+    put(path, data) unless data && existing_data == JSON.parse(data.to_json)
+  end
+  
+  def self.data_to_json(data)
+    {value: data}.to_json if data
   end
   
   def request(method, path, data=nil)
@@ -49,7 +53,7 @@ class RoozerClient
       url = @urls.first
       resource = RestClient::Resource.new(url, @opts)
       fullpath = [@path,path].compact.map(&:to_s).join('/')
-      response = resource["/#{fullpath}"].send(method, *[({value: data}.to_json if data), {content_type: :json, accept: :json}].compact)
+      response = resource["/#{fullpath}"].send(method, *[self.class.data_to_json(data), {content_type: :json, accept: :json}].compact)
       JSON.parse(response) rescue {}
     rescue SystemCallError, RestClient::RequestTimeout, RestClient::ServerBrokeConnection, RestClient::InternalServerError
       puts "#{$!.class}, retrying..."

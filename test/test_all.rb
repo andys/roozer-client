@@ -67,7 +67,7 @@ class TestRoozerClient < Test::Unit::TestCase
 
   def test_update_same
     result = nil
-    datahash = {'a' => 'b'}
+    datahash = {'a' => 1}
     response = accept_request(200, {name:"/test/sub1",type:"file",value:datahash}.to_json) do
       result = @client.update('sub1', datahash)
     end
