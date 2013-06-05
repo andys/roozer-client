@@ -1,3 +1,4 @@
+v0.8. tree and deltree
 v0.7. more accurate change detection for update
 v0.6. support delete and update methods
 v0.5. Catch more network errors

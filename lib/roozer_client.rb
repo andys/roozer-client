@@ -39,6 +39,26 @@ class RoozerClient
     request(:delete, path)
   end
   
+  def deltree(path)
+    tree(path).each do |entry|
+      begin
+        delete(entry)
+      rescue RestClient::ResourceNotFound:
+      end
+    end
+  end
+  
+  def tree(path=nil)
+    result = []
+    entries = list(path)
+    if entries
+      entries.each do |entry|
+        result.push(*tree("#{path}/#{entry}"))
+      end
+    end
+    result.push path
+  end
+  
   def update(path, data)
     existing_data = get(path) rescue nil
     put(path, data) unless data && existing_data == JSON.parse(data.to_json)

@@ -7,15 +7,27 @@ require 'roozer_client'
 
 rc = RoozerClient.new(url: 'http://orch1:2987;http://orch2:2987', path: 'rootpath')
 
+# Create a file
 rc['subpath'] = { data: "abc" }
 
+# List dirs
 rc.list
 => ['subpath']
 
+# Read a file
 rc['subpath']
 => { "data" => "abc" }
 
+# List all dirs in a depth-first traversal
+rc['dir1/dir2/dir3'] = true
+rc.tree 'dir1'
+=> ["/dir1/dir2/dir3", "/dir1/dir2", "/dir1"]
+
+# Delete a file
 rc.delete 'subpath/data'
+
+# Delete all files in a directory tree
+rc.deltree 'dir1'
 
 # sets the data only if is different to what is already there
 rc.update(path, {...data...})  
