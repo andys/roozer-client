@@ -43,7 +43,7 @@ class RoozerClient
     tree(path).each do |entry|
       begin
         delete(entry)
-      rescue RestClient::ResourceNotFound:
+      rescue RestClient::ResourceNotFound
       end
     end
   end
